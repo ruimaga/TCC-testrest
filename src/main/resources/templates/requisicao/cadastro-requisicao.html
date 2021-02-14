@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout-padrao}">
+
+<body>
+	
+	<section layout:fragment="conteudo">
+		
+		<div class="page-header">
+			
+			<div class="container-fluid">
+				<h1>
+					Cadastro de Teste REST
+				</h1>
+			</div>
+		</div>
+		
+		<div class="container-fluid">
+		
+			<form method="POST" 
+			 class="form-vertical js-form-loading" 
+			 th:object="${requisicao}" 
+			 th:action="@{/requisicoes/novo}">
+				
+				
+				<!-- Mensagem de ALERTA	 -->
+				<div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()}">
+					
+					<th:block th:each="detailedError : ${#fields.detailedErrors()}">
+						<div>
+							<i class="fa  fa-exclamation-circle"></i>
+							<span th:text="${detailedError.message}"></span>
+						</div>  
+					</th:block>
+					
+				</div>
+				
+				
+				<!-- Mensagem de SUCESSO -->
+				<div class="alert  alert-success" role="alert" th:if="${!#strings.isEmpty(mensagem)}">
+					<button type="button" class="close" data-dismiss="alert" 
+					aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<span th:text="${mensagem}"></span> 
+				</div>
+				
+				<input type="hidden" th:field="*{id}"/>
+		
+				<div class="form-group va-required" th:classappend="${#fields.hasErrors('url')} ? has-error">
+					<label for="url" class="control-label">URL</label>
+					<input id="url" type="text" maxlength="150" class="form-control" th:field="*{url}"/>
+				</div>
+		
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group va-required" th:classappend="${#fields.hasErrors('metodo')} ? has-error">
+							<label for="metodo" class="control-label">Tipo de Método</label>
+							<select id="metodo" class="form-control" th:field="*{metodo}">
+								<option value="">Selecione um Método</option>
+								<option th:each="metodo : ${tipoMetodos}" maxlength="40" th:value="${metodo}" th:text="#{|tipoMetodo.${metodo}|}"></option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="col-sm-3">
+						<div class="form-group va-required" th:classappend="${#fields.hasErrors('atributo')} ? has-error">
+							<label for="atributo" class="control-label">Tipo do Atributo</label>
+							<select id="atributo" class="form-control" th:field="*{atributo}">
+								<option value="">Selecione um Tipo de Atributo</option>
+								<option th:each="atributo : ${tipoAtributos}" maxlength="40" th:value="${atributo}" th:text="#{|tipoAtributo.${atributo}|}"></option>
+							</select>
+						</div>
+					</div>
+
+			    </div>
+			    
+			    <div class="row">
+			    	<div class="col-sm-4">
+						<div class="form-group"
+							th:classappend="${#fields.hasErrors('nodes')} ? has-error">
+							<label for="nodes" class="control-label">Sequencia dos Nodes no JSON (Separar com ;)</label> <input id="nodes"
+								type="text" class="form-control" maxlength="80" th:field="*{nodes}" />
+						</div>
+					</div>	
+			    	<div class="col-sm-4">
+						<div class="form-group va-required"
+							th:classappend="${#fields.hasErrors('nomeAtributo')} ? has-error">
+							<label for="nomeAtributo" class="control-label">Nome Atributo Validação</label> <input id="nomeAtributo"
+								type="text" class="form-control" maxlength="80" th:field="*{nomeAtributo}" />
+						</div>
+					</div>	
+					
+					
+					
+					<div class="col-sm-4">
+						<div class="form-group va-required"
+							th:classappend="${#fields.hasErrors('valorValidado')} ? has-error">
+							<label for="valorValidado" class="control-label">Valor Atributo Validação</label> <input id="valorValidado"
+								type="text" class="form-control" maxlength="80" th:field="*{valorValidado}" />
+						</div>
+				 	</div>
+				</div>
+				 	
+				 <div class="row">	
+					 	<div class="col-sm-2">
+							<div class="form-group"
+								th:classappend="${#fields.hasErrors('corpoMsg')} ? has-error">
+								<label for="corpoMsg" class="control-label">Body</label>
+								<textarea th:field="*{corpoMsg}" id="corpoMsg"  placeholder="Obrigatório para o Método POST"></textarea>
+							</div>	
+						</div>
+				</div>
+
+			<div class="row">	
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">Salvar</button>
+				</div>
+			</div>	
+		
+			</form>
+		</div>
+	</section>
+	
+</body>
+</html>
